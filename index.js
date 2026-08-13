@@ -88,7 +88,7 @@ const Game = {
 		{ radius: 96,  scoreValue: 36, img: './assets/img/cube7.png'  },
 		{ radius: 128, scoreValue: 45, img: './assets/img/cube8.png'  },
 		{ radius: 160, scoreValue: 55, img: './assets/img/cube9.png'  },
-		{ radius: 192, scoreValue: 66, img: './assets/img/cube_74.png' },
+		{ radius: 192, scoreValue: 66, img: './assets/img/cube10.png' },
 	],
 	currentFruitSize: 0,
 	nextFruitSize: 0,
