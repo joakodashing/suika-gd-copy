@@ -50,17 +50,17 @@ const Game = {
 	cache: { highscore: 0 },
 	sounds: {
 		click: new Audio('./assets/click.mp3'),
-		pop0: new Audio('./assets/pop0.mp3'),
-		pop1: new Audio('./assets/pop1.mp3'),
-		pop2: new Audio('./assets/pop2.mp3'),
-		pop3: new Audio('./assets/pop3.mp3'),
-		pop4: new Audio('./assets/pop4.mp3'),
-		pop5: new Audio('./assets/pop5.mp3'),
-		pop6: new Audio('./assets/pop6.mp3'),
-		pop7: new Audio('./assets/pop7.mp3'),
-		pop8: new Audio('./assets/pop8.mp3'),
-		pop9: new Audio('./assets/pop9.mp3'),
-		pop10: new Audio('./assets/pop10.mp3'),
+		0: new Audio('./assets/explode_11.ogg'),
+		1: new Audio('./assets/explode_11.ogg'),
+		2: new Audio('./assets/explode_11.ogg'),
+		3: new Audio('./assets/explode_11.ogg'),
+		4: new Audio('./assets/explode_11.ogg'),
+		5: new Audio('./assets/explode_11.ogg'),
+		6: new Audio('./assets/explode_11.ogg'),
+		7: new Audio('./assets/explode_11.ogg'),
+		8: new Audio('./assets/explode_11.ogg'),
+		9: new Audio('./assets/explode_11.ogg'),
+		10: new Audio('./assets/explode_11.ogg'),
 	},
 
 	stateIndex: GameStates.MENU,
@@ -190,8 +190,8 @@ const Game = {
 				// Skip different sizes
 				if (bodyA.sizeIndex !== bodyB.sizeIndex) continue;
 
-				// Skip if already popped
-				if (bodyA.popped || bodyB.popped) continue;
+				// Skip if already ped
+				if (bodyA.ped || bodyB.ped) continue;
 
 				let newSize = bodyA.sizeIndex + 1;
 
@@ -206,26 +206,26 @@ const Game = {
 				const midPosX = (bodyA.position.x + bodyB.position.x) / 2;
 				const midPosY = (bodyA.position.y + bodyB.position.y) / 2;
 
-				bodyA.popped = true;
-				bodyB.popped = true;
+				bodyA.ped = true;
+				bodyB.ped = true;
 
-				Game.sounds[`pop${bodyA.sizeIndex}`].play();
+				Game.sounds[`${bodyA.sizeIndex}`].play();
 				Composite.remove(engine.world, [bodyA, bodyB]);
 				Composite.add(engine.world, Game.generateFruitBody(midPosX, midPosY, newSize));
-				Game.addPop(midPosX, midPosY, bodyA.circleRadius);
+				Game.add(midPosX, midPosY, bodyA.circleRadius);
 				Game.calculateScore();
 			}
 		});
 	},
 
-	addPop: function (x, y, r) {
+	add: function (x, y, r) {
 		const circle = Bodies.circle(x, y, r, {
 			isStatic: true,
 			collisionFilter: { mask: 0x0040 },
 			angle: rand() * (Math.PI * 2),
 			render: {
 				sprite: {
-					texture: './assets/img/pop.png',
+					texture: './assets/img/.png',
 					xScale: r / 384,
 					yScale: r / 384,
 				}
@@ -262,7 +262,7 @@ const Game = {
 			render: { sprite: { texture: size.img, xScale: size.radius / 512, yScale: size.radius / 512 } },
 		});
 		circle.sizeIndex = sizeIndex;
-		circle.popped = false;
+		circle.ped = false;
 
 		return circle;
 	},
