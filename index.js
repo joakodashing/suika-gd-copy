@@ -50,17 +50,17 @@ const Game = {
 	cache: { highscore: 0 },
 	sounds: {
 		click: new Audio('./assets/click.mp3'),
-		0: new Audio('./assets/pop0.mp3'),
-		1: new Audio('./assets/pop1.mp3'),
-		2: new Audio('./assets/pop2.mp3'),
-		3: new Audio('./assets/pop3.mp3'),
-		4: new Audio('./assets/pop4.mp3'),
-		5: new Audio('./assets/pop5.mp3'),
-		6: new Audio('./assets/pop6.mp3'),
-		7: new Audio('./assets/pop7.mp3'),
-		8: new Audio('./assets/pop8.mp3'),
-		9: new Audio('./assets/pop9.mp3'),
-		10: new Audio('./assets/pop10.mp3'),
+		pop0: new Audio('./assets/pop0.mp3'),
+		pop1: new Audio('./assets/pop1.mp3'),
+		pop2: new Audio('./assets/pop2.mp3'),
+		pop3: new Audio('./assets/pop3.mp3'),
+		pop4: new Audio('./assets/pop4.mp3'),
+		pop5: new Audio('./assets/pop5.mp3'),
+		pop6: new Audio('./assets/pop6.mp3'),
+		pop7: new Audio('./assets/pop7.mp3'),
+		pop8: new Audio('./assets/pop8.mp3'),
+		pop9: new Audio('./assets/pop9.mp3'),
+		pop10: new Audio('./assets/pop10.mp3'),
 	},
 
 	stateIndex: GameStates.MENU,
@@ -190,8 +190,8 @@ const Game = {
 				// Skip different sizes
 				if (bodyA.sizeIndex !== bodyB.sizeIndex) continue;
 
-				// Skip if already ped
-				if (bodyA.ped || bodyB.ped) continue;
+				// Skip if already popped
+				if (bodyA.popped || bodyB.popped) continue;
 
 				let newSize = bodyA.sizeIndex + 1;
 
@@ -206,26 +206,26 @@ const Game = {
 				const midPosX = (bodyA.position.x + bodyB.position.x) / 2;
 				const midPosY = (bodyA.position.y + bodyB.position.y) / 2;
 
-				bodyA.ped = true;
-				bodyB.ped = true;
+				bodyA.popped = true;
+				bodyB.popped = true;
 
-				Game.sounds[`${bodyA.sizeIndex}`].play();
+				Game.sounds[`pop${bodyA.sizeIndex}`].play();
 				Composite.remove(engine.world, [bodyA, bodyB]);
 				Composite.add(engine.world, Game.generateFruitBody(midPosX, midPosY, newSize));
-				Game.add(midPosX, midPosY, bodyA.circleRadius);
+				Game.addPop(midPosX, midPosY, bodyA.circleRadius);
 				Game.calculateScore();
 			}
 		});
 	},
 
-	add: function (x, y, r) {
+	addPop: function (x, y, r) {
 		const circle = Bodies.circle(x, y, r, {
 			isStatic: true,
 			collisionFilter: { mask: 0x0040 },
 			angle: rand() * (Math.PI * 2),
 			render: {
 				sprite: {
-					texture: './assets/img/.png',
+					texture: './assets/img/pop.png',
 					xScale: r / 384,
 					yScale: r / 384,
 				}
@@ -262,7 +262,7 @@ const Game = {
 			render: { sprite: { texture: size.img, xScale: size.radius / 512, yScale: size.radius / 512 } },
 		});
 		circle.sizeIndex = sizeIndex;
-		circle.ped = false;
+		circle.popped = false;
 
 		return circle;
 	},
